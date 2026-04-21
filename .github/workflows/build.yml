@@ -14,5 +14,11 @@ jobs:
       - name: Build APK
         run: |
           echo "جاري تجميع تطبيق السلطان AI..."
-          # هاد المرحلة كتحتاج سيرفرات GitHub يخدمو
-
+          # GitHub يخدمو هاد المرحلة كتحتاج سيرفرات
+          
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sultan-AI-App
+          path: ./*.apk
+      
