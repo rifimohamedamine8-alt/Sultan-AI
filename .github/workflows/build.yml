@@ -9,17 +9,19 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - name: Install Buildozer
+      - name: Install Buildozer and Dependencies
         run: |
           sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev
           pip install --user --upgrade buildozer
+          pip install --user --upgrade Cython==0.29.33
       - name: Build APK
         run: |
-          # هاد السطر غيصاوب إعدادات التطبيق الأساسية
           if [ ! -f buildozer.spec ]; then
             ~/.local/bin/buildozer init
             sed -i 's/package.name = myapp/package.name = sultanai/' buildozer.spec
+            sed -i 's/package.domain = org.test/package.domain = org.sultan/' buildozer.spec
+            sed -i 's/# android.accept_sdk_license = False/android.accept_sdk_license = True/' buildozer.spec
           fi
           ~/.local/bin/buildozer -v android debug
       - name: Upload APK
