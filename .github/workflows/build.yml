@@ -5,19 +5,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-
-      - name: Create Sultan APK
+      - name: Install Buildozer
         run: |
-          # هاد الكود كيصاوب ملف حقيقي باش السيستيم يلقى ما يرفع
-          echo "Sultan AI is Building..." > sultan_app.apk
-          
-      - name: Upload Sultan App
+          sudo apt update
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+          pip install --user --upgrade buildozer
+      - name: Build APK
+        run: |
+          # هاد السطر غيصاوب إعدادات التطبيق الأساسية
+          if [ ! -f buildozer.spec ]; then
+            ~/.local/bin/buildozer init
+            sed -i 's/package.name = myapp/package.name = sultanai/' buildozer.spec
+          fi
+          ~/.local/bin/buildozer -v android debug
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Sultan-AI-App
-          path: sultan_app.apk
+          name: Sultan-AI-Real-App
+          path: bin/*.apk
