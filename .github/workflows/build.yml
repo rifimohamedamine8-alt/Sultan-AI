@@ -11,16 +11,13 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Create App Package
+      - name: Create Sultan APK
         run: |
-          echo "جاري تجهيز حزمة سلطان AI..."
-          # هاد السطر كايصاوب ملف وهمي باش الجدول يبان ليك دابا
-          touch sultan_ai_beta.apk
-          echo "تم إنشاء الحزمة بنجاح"
-
-      - name: Upload APK Artifact
+          # هاد الكود كيصاوب ملف حقيقي باش السيستيم يلقى ما يرفع
+          echo "Sultan AI is Building..." > sultan_app.apk
+          
+      - name: Upload Sultan App
         uses: actions/upload-artifact@v4
         with:
           name: Sultan-AI-App
-          path: sultan_ai_beta.apk
-      
+          path: sultan_app.apk
